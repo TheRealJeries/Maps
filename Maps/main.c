@@ -28,7 +28,7 @@ int main(int argc, const char * argv[]) {
     node_type *node;
     neigh_type *neigh;
     graph_type *graph;
-    srand(time(NULL));
+    srand((unsigned)time(NULL));
     printf("Grid size: ");
     scanf("%u", &matrix_size);
 

@@ -8,8 +8,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include "../../stack/stack.h"
-#include "../common/common.h"
+#include "stack.h"
+#include "common.h"
 
 void test_empty_stack(void) {
     stack_type *stack = create_stack();
@@ -42,7 +42,7 @@ void test_pop_empty_stack(void) {
 
 
 
-int main(void) {
+int stack_tests(void) {
     test_empty_stack();
     test_nonempty_stack();
     test_pop_empty_stack();

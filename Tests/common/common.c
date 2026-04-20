@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include "common.h"
 
 void assert(const char *test_name, bool expr) {
     if (!expr) {

@@ -1,26 +1,29 @@
 all: bin/main bin/tests
 
-bin/main: obj/main.o obj/node.o obj/graph.o obj/stack.o
-	cc obj/main.o obj/node.o obj/graph.o obj/stack.o -o  bin/main
+Maps/bin/main: Maps/obj/main.o Maps/obj/node.o Maps/obj/graph.o Maps/obj/stack.o
+	cc Maps/obj/main.o Maps/obj/node.o Maps/obj/graph.o Maps/obj/stack.o -o  Maps/bin/main
 
-bin/tests: obj/node.o obj/stack.o obj/stack_tests.o obj/common.o
-	cc obj/node.o obj/stack.o obj/stack_tests.o obj/common.o -o bin/tests
+Maps/bin/tests: Maps/obj/node.o Maps/obj/stack.o Maps/obj/stack_tests.o Maps/obj/common.o
+	cc Maps/obj/node.o Maps/obj/stack.o Maps/obj/stack_tests.o Maps/obj/common.o -o Maps/bin/tests
 
-obj/main.o: main.c
-	cc -c main.c -o obj/main.o
-	
-obj/common.o: tests/common/common.c tests/common/common.h
-	cc -c tests/common/common.c -o obj/common.o
+Maps/obj/main.o: Maps/main.c
+	cc -c Maps/main.c -o Maps/obj/main.o
 
-obj/stack_tests.o: tests/stack/stack_tests.c tests/stack/stack_tests.h
-	cc -c tests/stack/stack_tests.c -o obj/stack_tests.o
+Tests/bin/main:	Tests/obj/common.o Tests/obj/stack_tests.o Maps/obj/main.o Maps/obj/node.o Maps/obj/graph.o Maps/obj/stack.o
+	cc Maps/obj/main.o Maps/obj/node.o Maps/obj/graph.o Maps/obj/stack.o -o  Maps/bin/main
 
-obj/stack.o: stack/stack.c stack/stack.h
-	cc -c stack/stack.c -o obj/stack.o
+Tests/obj/common.o: Tests/common/common.c Tests/common/common.h
+	cc -c Tests/common/common.c -o Tests/obj/common.o
 
-obj/node.o: node/node.c node/node.h
-	cc -c node/node.c -o obj/node.o
+Tests/obj/stack_tests.o: Tests/stack/stack_tests.c Tests/stack/stack_tests.h
+	cc -c Tests/stack/stack_tests.c -o Tests/obj/stack_tests.o
 
-obj/graph.o: graph/graph.c graph/graph.h
-	cc -c graph/graph.c -o obj/graph.o
+Maps/obj/stack.o: Maps/stack/stack.c Maps/stack/stack.h
+	cc -c Maps/stack/stack.c -o Maps/obj/stack.o
+
+Maps/obj/node.o: Maps/node/node.c Maps/node/node.h
+	cc -c Maps/node/node.c -o Maps/obj/node.o
+
+Maps/obj/graph.o: Maps/graph/graph.c Maps/graph/graph.h
+	cc -c Maps/graph/graph.c -o Maps/obj/graph.o
 

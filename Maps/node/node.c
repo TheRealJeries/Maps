@@ -18,7 +18,7 @@ void strip(char *str) {
     }
 }
 
-node_type *create_node(const char *name, int index) {
+node_type *create_node(char *name, int index) {
     node_type *node = malloc(sizeof(node_type));
     if (!node) {
         printf("%s: ERROR - Allocating %zu bytes\n", __func__, sizeof(node_type));

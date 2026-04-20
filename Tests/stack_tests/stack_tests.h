@@ -8,6 +8,7 @@
 #define __stack_tests_h__
 
 void test_create_stack(void);
-void test_nonempty_stack(void) {
-
+void test_nonempty_stack(void);
+void test_pop_empty_stack(void);
+int stack_tests(void);
 #endif

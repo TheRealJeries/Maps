@@ -8,6 +8,7 @@
 #define __node_h__
 
 #define MAX_NAME_LEN 128
+#include <stdlib.h>
 
 struct node_s; // forward declaration
 
@@ -24,7 +25,7 @@ typedef struct node_struct {
     neigh_type *neighs;
 } node_type;
 
-node_type *create_node(const char *name, int index);
+node_type *create_node(char *name, int index);
 int add_neigh(node_type *node, node_type *neigh, int cost);
 
 #endif

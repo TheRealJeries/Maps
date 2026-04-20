@@ -7,6 +7,7 @@
 
 #ifndef __common_h__
 #define __common_h__
+#include <stdbool.h>
 
 void assert(const char *test_name, bool expr);
 
