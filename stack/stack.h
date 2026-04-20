@@ -17,7 +17,6 @@ typedef struct stack_el_struct {
 
 typedef struct {
     stack_el_type *head;
-    int num_elements;
 } stack_type;
 
 stack_type *create_stack(void);

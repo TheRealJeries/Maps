@@ -7,6 +7,7 @@
 #ifndef __stack_tests_h__
 #define __stack_tests_h__
 
-int test_create_stack(void);
+void test_create_stack(void);
+void test_nonempty_stack(void) {
 
 #endif

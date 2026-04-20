@@ -11,16 +11,42 @@
 #include "../../stack/stack.h"
 #include "../common/common.h"
 
-int test_create_stack(void) {
+void test_empty_stack(void) {
     stack_type *stack = create_stack();
     assert(__func__, stack != NULL);
     assert(__func__, stack->head == NULL);
-    assert(__func__, stack->num_elements == 0);
-    return 1;
+    assert(__func__, isEmpty(stack) == true);
+    free(stack);
 }
 
+void test_nonempty_stack(void) {
+    stack_type *stack = create_stack();
+    node_type node = {0};
+    node.name = "Test";
+    node.name_len = 4;
+    assert(__func__, stack != NULL);
+    push(stack, &node);
+
+    assert(__func__, stack->head != NULL);
+    assert(__func__, isEmpty(stack) == false);
+    free(stack);
+}
+
+void test_pop_empty_stack(void) {
+    stack_type *stack = create_stack();
+    assert(__func__, stack != NULL);
+    assert(__func__, stack->head == NULL);
+    assert(__func__, pop(stack) == NULL);
+    free(stack);
+}
+
+
+
 int main(void) {
-    test_create_stack();
+    test_empty_stack();
+    test_nonempty_stack();
+    test_pop_empty_stack();
+    printf("Tests succeeded!\n");
     return 0;
 }
 

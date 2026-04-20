@@ -17,7 +17,6 @@ stack_type *create_stack(void) {
         return res;
     }
     res->head = NULL;
-    res->num_elements = 0;
     return res;
 }
 
