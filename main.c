@@ -24,10 +24,10 @@ int main(int argc, const char * argv[]) {
     unsigned matrix_size;
     int i;
     int j;
-    int fd;
     int **adj_matrix;
-    node_t *node;
-    neigh_t *neigh;
+    node_type *node;
+    neigh_type *neigh;
+    graph_type *graph;
     srand(time(NULL));
     printf("Grid size: ");
     scanf("%u", &matrix_size);
@@ -44,7 +44,7 @@ int main(int argc, const char * argv[]) {
     }
     for (i = 0; i < matrix_size; i++) {
         adj_matrix[i] = malloc(sizeof(int) * matrix_size);
-        if (!adj_matrix[i]) { //jdo clean up
+        if (!adj_matrix[i]) { //do clean up
             printf("%s: ERROR - Allocating %zu bytes\n", __func__, sizeof(int) * matrix_size);
             return EXIT_FAILURE;
         }
@@ -54,7 +54,7 @@ int main(int argc, const char * argv[]) {
         for (j = 0; j < matrix_size; j++) {
             if (i == j) {
                 adj_matrix[i][j] = 0;
-            } else if (!(rand()%3)) {
+            } else if (((rand()<<4)%3)) {
                 adj_matrix[i][j] = rand()%MAX_COST;
             } else {
                 adj_matrix[i][j] = -1;
@@ -64,7 +64,7 @@ int main(int argc, const char * argv[]) {
         printf("\n");
     }
     
-    graph_t *graph = convert_to_graph(adj_matrix, matrix_size);
+    graph = convert_to_graph(adj_matrix, matrix_size);
     
     for (int i = 0; i < graph->num_nodes; i++) {
         node = graph->nodes[i];

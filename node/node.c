@@ -11,17 +11,17 @@
 #include "node.h"
 
 void strip(char *str) {
-    int i = strlen(str)-1;
+    unsigned long i = strlen(str)-1;
     while (str[i] == '\n') {
         str[i] = '\0';
         i--;
     }
 }
 
-node_t *create_node(const char *name) {
-    node_t *node = malloc(sizeof(node_t));
+node_type *create_node(const char *name, int index) {
+    node_type *node = malloc(sizeof(node_type));
     if (!node) {
-        printf("%s: ERROR - Allocating %zu bytes\n", __func__, sizeof(node_t));
+        printf("%s: ERROR - Allocating %zu bytes\n", __func__, sizeof(node_type));
         return NULL;
     }
     
@@ -37,16 +37,16 @@ node_t *create_node(const char *name) {
     strncpy(node->name, name, node->name_len);
     node->name[node->name_len] = '\0';
     node->neighs = NULL;
-
+    node->index = index;
     return node;
 }
 
 /*
  * Adds neighbor neigh to node node.
  */
-int add_neigh(node_t *node, node_t *neigh_node, int cost) {
+int add_neigh(node_type *node, node_type *neigh_node, int cost) {
     int res = 1;
-    neigh_t *neigh = NULL;
+    neigh_type *neigh = NULL;
     if (!node) {
         printf("%s: ERROR - NULL passed as node\n", __func__);
         return res;
@@ -57,9 +57,9 @@ int add_neigh(node_t *node, node_t *neigh_node, int cost) {
         return res;
     }
 
-    neigh = malloc(sizeof(neigh_t));
+    neigh = malloc(sizeof(neigh_type));
     if (!neigh) {
-        printf("%s: ERROR - Allocating %zu bytes", __func__, sizeof(neigh_t));
+        printf("%s: ERROR - Allocating %zu bytes", __func__, sizeof(neigh_type));
         return res;
     }
     
@@ -72,6 +72,6 @@ int add_neigh(node_t *node, node_t *neigh_node, int cost) {
     return res;
 }
 
-void destroy(node_t *node) {
+void destroy(node_type *node) {
     // clean up?
 }

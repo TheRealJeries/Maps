@@ -11,19 +11,20 @@
 
 struct node_s; // forward declaration
 
-typedef struct neigh_s {
+typedef struct neigh_struct {
     int cost;
-    struct node_s *node;
-    struct neigh_s *next;
-} neigh_t;
+    struct node_struct *node;
+    struct neigh_struct *next;
+} neigh_type;
 
-typedef struct node_s {
+typedef struct node_struct {
     char *name;
+    int index;
     size_t name_len;
-    neigh_t *neighs;
-} node_t;
+    neigh_type *neighs;
+} node_type;
 
-node_t *create_node(const char *name);
-int add_neigh(node_t *node, node_t *neigh, int cost);
+node_type *create_node(const char *name, int index);
+int add_neigh(node_type *node, node_type *neigh, int cost);
 
 #endif
