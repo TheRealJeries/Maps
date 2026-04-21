@@ -8,8 +8,9 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include "stack.h"
-#include "common.h"
+#include "stack_tests.h"
+#include "../../Maps/stack/stack.h"
+#include "../common/common.h"
 
 void test_empty_stack(void) {
     stack_type *stack = create_stack();
