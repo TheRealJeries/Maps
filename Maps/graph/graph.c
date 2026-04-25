@@ -21,6 +21,12 @@ graph_type *convert_to_graph(int **adjacency_matrix, unsigned matrix_size) {
         printf("%s: ERROR - Allocating %zu bytes\n", __func__, sizeof(graph));
         return graph;
     }
+
+    if (!fd) {
+        printf("%s: ERROR - Opening file\n", __func__);
+        free(graph);
+        return NULL;
+    }
     
     graph->num_nodes = matrix_size;
     graph->nodes = calloc(matrix_size, sizeof(node_type *));
@@ -41,7 +47,7 @@ graph_type *convert_to_graph(int **adjacency_matrix, unsigned matrix_size) {
             }
         }
         for (v = 0; v < matrix_size; v++) {
-            if (u != v && adjacency_matrix[u][v] > 0) {
+            if (adjacency_matrix[u][v] > 0) {
                 /*
                  * If u is not v, and there is an edge from u to v
                  * Create v if it doesn't exist yet
@@ -58,17 +64,6 @@ graph_type *convert_to_graph(int **adjacency_matrix, unsigned matrix_size) {
                 if (add_neigh(graph->nodes[u], graph->nodes[v], adjacency_matrix[u][v])) {
                     printf("%s: ERROR - adding neighbor %s to %s failed\n", __func__,graph->nodes[v]->name, graph->nodes[u]->name);
                 }
-            }
-            if (dfs(graph, graph->nodes[u], graph->nodes[v])) {
-                printf("%s: found path from %s to %s\n",
-                       __func__,
-                       graph->nodes[u]->name,
-                       graph->nodes[v]->name);
-            } else {
-                printf("%s: did not find path from %s to %s\n",
-                       __func__,
-                       graph->nodes[u]->name,
-                       graph->nodes[v]->name);
             }
         }
     }
@@ -114,4 +109,23 @@ bool dfs(graph_type *graph, node_type *from, node_type *to) {
     }
     free(visited);
     return false;
+}
+
+void print_graph(graph_type *graph) {
+    neigh_type *neigh;
+    node_type *node;
+    for (int i = 0; i < graph->num_nodes; i++) {
+        node = graph->nodes[i]; 
+        printf("%s neighbors:\n", node->name);
+        neigh = node->neighs;
+	printf("\t");
+        while (neigh) {
+            if (neigh->next) {
+                printf("%s(%d) -> ", neigh->node->name, neigh->cost);
+            } else {
+                printf("%s(%d)\n", neigh->node->name, neigh->cost);
+            }
+            neigh=neigh->next;
+        }
+    }
 }

@@ -54,7 +54,7 @@ int main(int argc, const char * argv[]) {
         for (j = 0; j < matrix_size; j++) {
             if (i == j) {
                 adj_matrix[i][j] = 0;
-            } else if (((rand()<<4)%3)) {
+            } else if (((rand())%5)) {
                 adj_matrix[i][j] = rand()%MAX_COST;
             } else {
                 adj_matrix[i][j] = -1;
@@ -65,18 +65,15 @@ int main(int argc, const char * argv[]) {
     }
     
     graph = convert_to_graph(adj_matrix, matrix_size);
-    
-    for (int i = 0; i < graph->num_nodes; i++) {
-        node = graph->nodes[i];
-        printf("%s neighbors:\n", node->name);
-        neigh = node->neighs;
-        while (neigh) {
-            if (neigh->next) {
-                printf("\t%s (%d) -", neigh->node->name, neigh->cost);
+    print_graph(graph);
+
+    for (int u = 0; u < graph->num_nodes; u++) {
+        for (int v = 0; v < graph->num_nodes; v++) {
+            if (dfs(graph, graph->nodes[u], graph->nodes[v])) {
+                printf("\tFound path from %s to %s\n", graph->nodes[u]->name, graph->nodes[v]->name);
             } else {
-                printf("\t%s (%d)\n", neigh->node->name, neigh->cost);
+                printf("\tDid not find path from %s to %s\n", graph->nodes[u]->name, graph->nodes[v]->name);
             }
-            neigh=neigh->next;
         }
     }
     return EXIT_SUCCESS;

@@ -22,4 +22,5 @@ graph_type *convert_to_graph(int **adjacency_matrix, unsigned gridSize);
 bool dfs(graph_type *graph, node_type *from, node_type *to);
 void explore(node_type *node, stack_type *stack, bool *visited);
 void visit(node_type *node, bool *visited);
+void print_graph(graph_type *graph);
 #endif
