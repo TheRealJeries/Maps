@@ -50,9 +50,9 @@ node_type *pop(stack_type *stack) {
     if (el) {
         node = el->node;
         stack->head = el->next;
-        free(el);
         el->node = NULL;
         el->next = NULL;
+        free(el);
     }
     return node;
 }
