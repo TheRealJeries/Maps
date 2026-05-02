@@ -18,12 +18,12 @@
 
 #define MAX_SIZE 100000
 #define MAX_COST 50
+#define SPARSITY 10 // means SPARSITY% chance of an edge existing
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
     unsigned matrix_size;
-    int i;
-    int j;
+    int u;
+    int v;
     int **adj_matrix;
     node_type *node;
     neigh_type *neigh;
@@ -42,24 +42,24 @@ int main(int argc, const char * argv[]) {
         printf("%s: ERROR - Allocating %zu bytes\n ", __func__, sizeof(int *) * matrix_size);
         return EXIT_FAILURE;
     }
-    for (i = 0; i < matrix_size; i++) {
-        adj_matrix[i] = malloc(sizeof(int) * matrix_size);
-        if (!adj_matrix[i]) { //do clean up
+    for (u = 0; u < matrix_size; u++) {
+        adj_matrix[u] = malloc(sizeof(int) * matrix_size);
+        if (!adj_matrix[u]) { //do clean up
             printf("%s: ERROR - Allocating %zu bytes\n", __func__, sizeof(int) * matrix_size);
             return EXIT_FAILURE;
         }
     }
     
-    for (i = 0; i < matrix_size; i++) {
-        for (j = 0; j < matrix_size; j++) {
-            if (i == j) {
-                adj_matrix[i][j] = 0;
-            } else if (((rand())%5)) {
-                adj_matrix[i][j] = rand()%MAX_COST;
+    for (u = 0; u < matrix_size; u++) {
+        for (v = 0; v < matrix_size; v++) {
+            if (u == v) {
+                adj_matrix[u][v] = 0;
+            } else if ((rand() % 100) < SPARSITY) {
+                adj_matrix[u][v] = rand()%MAX_COST;
             } else {
-                adj_matrix[i][j] = -1;
+                adj_matrix[u][v] = -1;
             }
-            printf("%d ", adj_matrix[i][j]);
+            printf("%d ", adj_matrix[u][v]);
         }
         printf("\n");
     }
@@ -67,12 +67,12 @@ int main(int argc, const char * argv[]) {
     graph = convert_to_graph(adj_matrix, matrix_size);
     print_graph(graph);
 
-    for (int u = 0; u < graph->num_nodes; u++) {
-        for (int v = 0; v < graph->num_nodes; v++) {
+    for (u = 0; u < graph->num_nodes; u++) {
+        for (v = 0; v < graph->num_nodes; v++) {
             if (dfs(graph, graph->nodes[u], graph->nodes[v])) {
-                printf("\tFound path from %s to %s\n", graph->nodes[u]->name, graph->nodes[v]->name);
+                //printf("\tFound path from %s to %s\n", graph->nodes[u]->name, graph->nodes[v]->name);
             } else {
-                printf("\tDid not find path from %s to %s\n", graph->nodes[u]->name, graph->nodes[v]->name);
+                //printf("\tDid not find path from %s to %s\n", graph->nodes[u]->name, graph->nodes[v]->name);
             }
         }
     }

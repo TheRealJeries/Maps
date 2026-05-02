@@ -74,40 +74,68 @@ void visit(node_type *node, bool *visited) {
     visited[node->index] = true;
 }
 
-void explore(node_type *node, stack_type *stack, bool *visited) {
+void explore(node_type *node, stack_type *stack, bool *visited, int *last_visited) {
     neigh_type *neigh = node->neighs;
     while (neigh) {
         if (!visited[neigh->node->index]) {
             push(stack, neigh->node);
+            last_visited[neigh->node->index] = node->index;
         }
         neigh=neigh->next;
     }
 }
 
+void emptyStack(stack_type *stack) {
+    while (!isEmpty(stack)) {
+        pop(stack);
+    }
+}
+
 bool dfs(graph_type *graph, node_type *from, node_type *to) {
     stack_type stack = {0};
-    bool *visited = calloc(graph->num_nodes, sizeof(bool));
+    bool *visited; 
+    int *last_visited;
     node_type *node = NULL;
     if (!graph || !from || !to) {
         printf("%s: ERROR - NULL args", __func__);
         return false;
     }
-    
+    visited = calloc(graph->num_nodes, sizeof(bool));
+    if (!visited) {
+        printf("%s: ERROR - Allocating %zu bytes\n", __func__, sizeof(bool) * graph->num_nodes);
+        return false;
+    }
+
+    last_visited = calloc(graph->num_nodes, sizeof(int));
+    if (!last_visited) {
+        printf("%s: ERROR - Allocating %zu bytes\n", __func__, sizeof(int) * graph->num_nodes);
+        free(visited);
+        return false;
+    }
+
     node = from;
     push(&stack, node);
+    last_visited[node->index] = -1;
     while(!isEmpty(&stack)) {
         node = pop(&stack);
         if (node->index == to->index) {
-            while (!isEmpty(&stack)) {
-                pop(&stack);
-            }
+            emptyStack(&stack);
             free(visited);
+            printf("Path from %s to %s: \n", from->name, to->name);
+            while (last_visited[node->index] != -1) {
+                printf("%s <- ", node->name);
+                node = graph->nodes[last_visited[node->index]];
+            }
+            printf("%s\n", node->name);
+            free(last_visited);
+
             return true;
         }
         visit(node, visited);
-        explore(node, &stack, visited);
+        explore(node, &stack, visited, last_visited);
     }
     free(visited);
+    free(last_visited);
     return false;
 }
 
@@ -115,13 +143,12 @@ void print_graph(graph_type *graph) {
     neigh_type *neigh;
     node_type *node;
     for (int i = 0; i < graph->num_nodes; i++) {
-        node = graph->nodes[i]; 
+        node = graph->nodes[i];
         printf("%s neighbors:\n", node->name);
         neigh = node->neighs;
-	printf("\t");
         while (neigh) {
             if (neigh->next) {
-                printf("%s(%d) -> ", neigh->node->name, neigh->cost);
+                printf("-> %s(%d) -> ", neigh->node->name, neigh->cost);
             } else {
                 printf("%s(%d)\n", neigh->node->name, neigh->cost);
             }
